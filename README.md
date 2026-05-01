@@ -54,8 +54,8 @@ By the final review, this README should clearly show:
 ---
 # 1. Team Identity  
 
-## 1.1 Studio / Group Name: Visionary Minds 
-ROBOCAR  
+## 1.1 Studio / Group Name: 
+Visionary Minds 
 
 ## 1.2 Team Members  
 
