@@ -218,7 +218,7 @@ Add a sketch with labels showing:
 
 **Insert image below:**  
 `[Upload image and link here]`
-<img width="1600" height="1200" alt="image" src="https://github.com/user-attachments/assets/95637f31-b4e7-4427-a9e1-4b63fbeb0ac5" />
+<img width="1600" height="1200" alt="6.3" src="https://github.com/user-attachments/assets/95637f31-b4e7-4427-a9e1-4b63fbeb0ac5" />
 
 ## 6.3 Approximate Dimensions
 
@@ -248,18 +248,11 @@ Add a sketch with labels showing:
 ---
 
 ## 7.2 Wiring Plan  
-
-The Raspberry Pi is connected to the **L298N motor driver** using GPIO pins to control motor direction.  
-
-The **IR sensors** are connected to input GPIO pins to detect the line path.  
-
-The **ultrasonic sensor** uses Trigger and Echo pins to measure distance from obstacles.  
-
-The **touch sensor** is connected to detect physical collision.  
-
-The **LCD display** is connected using I2C pins to show messages such as **"Object Detected"**.  
-
-All components share a **common ground** for stable operation.
+- The Raspberry Pi is connected to Arduino using USB to generate pwm singnals for motor.
+- The Arduino has hw130 sheild (L298N for arduino) that controls the motors.
+- The Web cam is connected to the Raspi using USB port.
+- The IR sensors are connected to input GPIO pins (17 , 27) to detect the line path.  
+- All components share a common ground and Vdd for stable operation.
 
 ---
 
@@ -269,7 +262,7 @@ Insert a hand-drawn or software-made circuit diagram.
 
 **Insert image below:**  
 `[Upload image and link here]`
-<img width="867" height="1156" alt="" src="" />
+<img width="867" height="1156" alt="7.3" src="" />
 
 
 # 7.4. Power Plan
@@ -344,8 +337,7 @@ Suggested sequence:
 - error handling.
 
 **Insert image below:**  
-<img width="1600" height="1200" alt="image" src="" />
-<img width="1600" height="1200" alt="image" src="" />
+<img width="1600" height="1200" alt="8.3" src="" />
 
 
 
@@ -599,7 +591,8 @@ Suggested images:
 - mechanism test,
 - app screenshot(NA),
 - final build.
-- <img width="960" height="1280" alt="WhatsApp Image 2026-04-24 at 9 46 02 AM (1)" src="https://github.com/user-attachments/assets/74baa570-5770-483e-be6d-d2f03386e37c" />
+- <img width="960" height="1280" alt="16" src="https://github.com/user-attachments/assets/74baa570-5770-483e-be6d-d2f03386e37c" />
+- <img width="960" height="1280" alt="WhatsApp Image 2026-05-01 at 5.10.10 PM" src="https://github.com/user-attachments/assets/74baa570-5770-483e-be6d-d2f03386e37c" />
 
 
 # 17. Final Outcome  
