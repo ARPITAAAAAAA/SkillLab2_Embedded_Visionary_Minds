@@ -177,7 +177,8 @@ The system works using sensors and motors controlled by Raspberry Pi.
 **Output:**  
 - Physical Motion: Four BO motors execute movement (Forward, Reverse, Right and Left).
 - Safety Response: The motors are automatically disabled if the IR sensors detect an immediate collision risk.
-- Information: The system outputs detects the estimated age data.  
+- Information: The system outputs detects the estimated age data.
+   
 **Physical Structure:**
 - Chassis: A 4WD mobile platform with a dual-tier arrangement.
 - Component Placement: The motors are all placed at the bottom and the Hw-130 aurdino sheild at he top centre for stability, while the Pi "brain" at the top back and camera sit on the top front for a clear field of view.
@@ -190,7 +191,6 @@ The system works using sensors and motors controlled by Raspberry Pi.
 | IR Sensor | Input | Detects path |
 | Raspberry Pi | Processing | Controls logic |
 | HW-130 Motor Shield | Output | Drives motors |
-| LCD Display | Output | Shows obstacle message |
 | USB Camera | Input | Captures live video feed |
 | Serial Connection (USB) | Input/Output | Communication bridge|
 |Li-ion Battery Pack| Power | Voltage and current to drive both the processing boards and the high-draw motors |
@@ -307,7 +307,7 @@ The software is built on a multi-threaded architecture to ensure that heavy AI p
 
 - **Input Handling:**  
   - Keyboard Thread: Listens for 'W' (Start), 'S' (Stop), or 'Q' (Quit) using termios for raw input.
-  - Vision Thread: Captures 320x240 resolution frames (optimized for Pi performance).
+  - Vision Thread: Captures frames (optimized for Pi performance).
   - Sensor Polling: The main loop constantly checks IR sensor states (high/low).
 
 - **Decision Logic:**  
@@ -362,41 +362,38 @@ Suggested sequence:
 | `[IR sensors]`                 | `[2]`    | `[Yes]` | `[No]`       | `0`            | `[Digital (High/Low) — compatible with Pi GPIO and Arduino]`                     | `[Fast response detection]`  |
 | `[DC Motors and wheel]`          | `[4]`    | `[Yes]`  | `[No]`      | `[0]`        | `[BO Motors and 7 cm wheels]` | `[high torque motors]`    |
 | `[Female and male headers]`               | `[1 pack]`    | `[No]`  | `[Yes]`      | `[80]`         |                              |        `For soldering`                   |
-| `[Batteries with holder]` | `[1]`    | `[Yes]`  | `[No]`      | `[0]`        |  |          |
+| `[Battery holder]` | `[1]`    | `[Yes]`  | `[No]`      | `[0]`        |  |          |
+| `[Battery AA]` | `[4]`    | `[No]`  | `[Yes]`      | `[120]`        |  |          |
 
 ## 9.2 Material Justification
 
 Explain why you selected your main materials and components.
 
-**Response:**  
-`DC motors (BO motors) were chosen instead of servos or steppers because the system requires continuous rotation for movement rather than precise angular control (Previously, we were considering using steppers as we were planning on tracking movement on the ESP using its relative position from an origin, but since we're using a camera now, this is not required). A motor driver (L298N) was used to allow bidirectional control and speed variation using PWM.`
+`The decision to use 4WD BO motors instead of servos or steppers was driven by the need for continuous movement and high torque to support the weight of two microcontrollers (Pi and Arduino). Since we transitioned to a camera-based tracking system, precise step-counting (which steppers provide) became less critical than overall mobility. The HW-130 shield was specifically chosen to simplify the 4WD wiring, as it allows us to control all four motors from a single Arduino interface using PWM for speed regulation. Using a Raspberry Pi for AI and an Arduino for hardware prevents the AI's high processing load from causing delays in motor safety responses.`
 
 
 ## 9.3 Items You chose
 
 | Item                 | Why Needed               | Purchase Link | Latest Safe Date to Procure | Status       |
 | -------------------- | ------------------------ | ------------- | --------------------------- | ------------ |
-| `BO Motors + Wheels` | `Drive system for car`   | `robu.in`     | `15th April`                | `[Received]` |
-| `Buck Converter`     | `Stable power for ESP32` | `local store` | `before testing`            | `[Received]` |
-| `Li-ion Batteries`   | `Portable power`         | `local store` | `before testing`            | `Recieved`   |
+| `AA Batteries` | `Motor power source`   | `Local Store`     | `Day of testing`                | `[Received]` |
+| `Header Pins`   | `Connect GPIO pins with sensors and Raspi pi pins `         | `local store` | `Day of testing`            | `Recieved`   |
 
 ## 9.4 Budget Summary
 
 | Budget Item           | Estimated Cost              |
 | --------------------- | ---------------------------:|
-| Electronics           | `[400]`                     |
-| Mechanical parts      | `[200]`                     |
-| Fabrication materials | `[0 (Available on campus)]` |
-| Purchased extras      | `[0]`                       |
-| Contingency           | `[300]`                     |
-| **Total**             | `[900]`                     |
+| Electronics (Pi, Arduino, Sensors)          | `[0]`                     |
+| Mechanical parts (Motors, Chassis)     | `[0]`                     |
+| Power (Batteries) | `[120]` |
+| Small components (Wires, Headers)      | `[80]`                       |
+| Contingency (Spares)           | `[100]`                     |
+| **Total**             | `[300]`                     |
 
 ## 9.5 Budget Reflection
 
-If your cost is too high, what can be simplified, removed, substituted, or shared?
-
-**Response:**  
-
+The current budget is extremely efficient as most core components (Raspberry Pi, Arduino, and Motors) were provided in the project kit. If additional costs were to arise, we could reduce the contingency fund or use existing campus resources for wiring and soldering. The primary expense remains high-quality batteries, as the 4WD system and high-level processing on the Pi draw significant current, making power the one area where we cannot compromise.
+ 
 ---
 
 # 10. Planning the Work
@@ -427,16 +424,16 @@ Include:
 
 | Area                 | Main Owner     | Support Owner |
 | -------------------- | ----------     | ------------- |
-| Concept              | `[Mrugendra]`  | `[Jyoti]`     |
-| Electronics          | `[]`           | `[]`          |
-| Coding               | `[]`           | `[]`          |
-| Mechanical build     | `[]`           | `[]`          |
-| Testing              | `[]`           | `[]`          |
-| Documentation        | `[]`           | `[]`          |
+| Concept              | `[Arpita]`  | `[Prashansa, Meher]`     |
+| Electronics          | `[Arpita, Prashansa]`           | `[Meher, Ansh]`          |
+| Coding               | `[Arpita]`           | `[Prashansa]`          |
+| Mechanical build     | `[Arpita]`           | `[Meher]`          |
+| Testing              | `[Prashansa]`           | `[Meher, Ansh, Arpita ]`          |
+| Documentation        | `[Meher]`           | `[Ansh, Arpita]`          |
 
 ---
 
-# 6 hour Milestones
+#11. Hour Milestones
 
 ## 11.1 6-hour Plan
 
@@ -450,19 +447,29 @@ Expected outcomes:
 - [x] BOM completed
 - [x] Purchase needs identified
 - [ ] Key uncertainty identified
-- [x] Basic feasibility tested
+- [ ] Basic feasibility tested
 
 ### Bi Hour 2 — Build Subsystems
 
 Expected outcomes:
 
-- [x] Electronics tests completed
-- [ ] CAD / structure planning completed
-- [ ] App UI started if needed
-- [x] Mechanical concept tested
-- [x] Main subsystems partially working
+- [X] Electronics tests completed
+- [ ] CAD / structure planning completed (NA)
+- [ ] App UI started if needed (NA)
+- [ ] Mechanical concept tested
+- [ ] Main subsystems partially working
 
 ### Bi Hour 3 — Integrate
+
+Expected outcomes:
+
+- [X] Electronics tests completed
+- [ ] CAD / structure planning completed (NA)
+- [ ] App UI started if needed(NA)
+- [X] Mechanical concept tested
+- [x] Main subsystems partially working
+
+### Bi Hour 4 — Update
 
 Expected outcomes:
 
@@ -470,26 +477,38 @@ Expected outcomes:
 - [x] Electronics integrated
 - [x] Code connected to hardware
 - [ ] App connected if required
-- [x] First playable version exists
+- [x] Wheels with raspi working version build
 
-### Bi Hour 4 — Refine and Finish
+### Bi Hour 5 — Update
+
+Expected outcomes:
+
+- [ ] Technical bugs reduced
+- [ ] Playtesting completed
+- [ ] Improvements made
+- [ ] Documentation completed
+- [X] Wheels with raspi and Ir working version build
+
+### Bi Hour 6 — Refine and Finish
 
 Expected outcomes:
 
 - [x] Technical bugs reduced
-- [x] Playtesting completed
-- [x] Improvements made
-- [x] Documentation completed
-- [x] Final build ready
+- [x] Testing completed
+- [ ] Improvements made
+- [X] Documentation completed
+- [x] Partial build ready
 
-## 12.2  Update Log
+## 12 Update Log 
 
 | Hour   | Planned Goal   | What Actually Happened | What Changed   | Next Steps     |
 | ------ | -------------- | ---------------------- | -------------- | -------------- |
-| Day 1 | `[Write here]` | `[Write here]`         | `[Write here]` | `[Write here]` |
-| Day 2 | `[Write here]` | `[Write here]`         | `[Write here]` | `[Write here]` |
-| Day 3 | `[Write here]` | `[Write here]`         | `[Write here]` | `[Write here]` |
-| Day 4 | `[Write here]` | `[Write here]`         | `[Write here]` | `[Write here]` |
+|  1 | `[Plan and De-risk]` | `[Finalized surveillance idea, completed sketches and BOM.]`         | `[Identified need for Pi/Arduino Serial stability.]` | `[Start subsystem tests]` |
+|  2 | `[Build Subsystems]` | `[Electronics tested; Pi-to-Arduino communication verified.]`         | `[Decided on a dual-power setup for Pi and motors.]` | `[Assemble chassis.]` |
+|  3 | `[Integrate]` | `[Chassis assembled; Pi and Arduino mounted and partially working.]`         | `[Adjusted motor placement for 4WD weight distribution.]` | `[Code hardware connection.]` |
+|  4 | `[Update]` | `[Physical body built and electronics integrated; wheels working with Raspi.]`         | `[Optimized Serial command delay for smoother driving.]` | `[Integrate IR sensors]` |
+|  5 | `[Update]` | `[Wheels working with Raspi and IR sensors; AI Stall logic implemented.]`         | `[Added 2s cooldown to AI detection loop.]` | `[Final playtesting.]` |
+|  6 | `[Refine and Finish]` | `[Bugs reduced; testing and documentation completed.]`         | `[Refined face-detection resolution for better frame rates.]` | `[Project ready for demo.]` |
 
 ---
 
@@ -499,7 +518,9 @@ Expected outcomes:
 
 | Risk                                                            | Type         | Likelihood | Impact   | Mitigation Plan                                                                       | Owner                |
 | --------------------------------------------------------------- | ------------ | ---------- | -------- | ------------------------------------------------------------------------------------- | -------------------- |
-| WiFi connection between laptop and ESP32 becomes unstable       | `Technical`  | `Medium`   | `High`   | Keep ESP32 close, ensure stable power supply, reduce network load, add fail-safe stop | `[Gopal]`           |
+| Serial lag between Pi and Arduino       | `Technical`  | `Medium`   | `High`   | Use 9600 baud rate and small command delays (0.02s). | `[Arpita]`           |
+| Age detection lag on Pi hardware      | `Technical`  | `Medium`   | `Medium`   | KReduce camera resolution to 320x240 for faster inference. | `[Prashansa, Meher]`           |
+|Voltage drop during motor start      | `Technical`  | `High`   | `High`   | Separate power source for Pi (Power Bank) and Motors (AA Pack). | `[Meher, Ansh]`           |
 
 
 ## 13.2 Biggest Unknown Right Now
@@ -511,22 +532,29 @@ The primary uncertainty is the accuracy and processing lag of the age-detection 
 
 ## 14.1 Technical Testing Plan
 
-| What Needs Testing     | How You Will Test It                                                                 | Success Condition                                                                                    |
-| ---------------------- | ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
-| `[Wifi connection]`    | `[Check if motor spins via app button]`                                              | `[Both motors accurately respond to wifi signals]`                                                   |
-                       |
+| What Needs Testing | How You Will Test It | Success Condition |
+| :--- | :--- | :--- |
+| `Serial Link` | `Send movement commands ('W', 'S') from the Raspberry Pi keyboard thread.` | `The Arduino receives the characters via Serial and triggers the motors instantly.` |
+| `IR Path Detection` | `Place the car on a path with obstacles on the left and right sides.` | `The car turns away from obstacles and stops if both sensors are triggered.` |
+| `AI Stall Logic` | `Present a human face to the USB camera while the car is in motion.` | `The car stops immediately, performs a 5-second age/gender scan, and logs data.` |
+| `Power Stability` | `Run the AI vision thread and 4WD motors simultaneously for 10 minutes.` | `The Raspberry Pi maintains a stable connection without rebooting or lagging.` |
+
 ## 14.2 Testing and Debugging Log
 
-| Date          | Problem Found                         | Type         | What You Tried                                | Result               | Next Action                                    |
-| ------------- | ------------------------------------- | ------------ | --------------------------------------------- | -------------------- | ---------------------------------------------- |
-| `18th April`  | `Car not balancing properly`          | `Mechanical` | `Add low-friction caster support to one side` | `Worked`             | `improve caster structure`                     |
-
+| Hour | Problem Found | Type | What You Tried | Result | Next Action |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `1-2` | `Car motors not working with standalone HW130` | `Techanical` | `Used arduino as base to run and generate the pwm` | `Worked` | `Handle power and run motors more steadily` |
+| `2-3` | `Serial buffer lag` | `Software` | `Added 0.02s delay in the main navigation loop` | `Success` | `Standardize baud rate at 9600` |
+| `3-5` | `False IR triggers` | `Electronics` | `Adjusted onboard potentiometer sensitivity` | `Resolved` | `Test in variable hallway lighting` |
+| `5-6` | `Age detection latency` | `Software` | `Reduced camera resolution to 320x240` | `Worked` | `Finalize multi-threading logic` |
 
 ## 14.3 Playtesting Notes
 
-| Tester      | What They Did                        | What Confused Them                    | What They Enjoyed                         | What You Will Change                          |
-| ----------- | ------------------------------------ | ------------------------------------- | ----------------------------------------- | --------------------------------------------- |
-| `Gopal` | `Tried navigating through obstacles` | `Some obstacles ewren't clear enough` | `Liked projection + real car interaction` | `Add a slight red highlight around obstacles` |
+| Tester | What They Did | What Confused Them | What They Enjoyed | What You Will Change |
+| :--- | :--- | :--- | :--- | :--- |
+| `Ansh` | `Navigated through hallways` | `Wait time during age scan felt like a software crash` | `The way the car "paused" to identify him` | `Add terminal print: "Scanning... Please wait"` |
+| `Meher` | `Tested IR safety stop` | `Car stopped too late at higher speeds` | `The automatic stop mechanism` | `Increase IR sensor mounting angle outward` |
+| `Arpita and Prashansa` | `Observed age detection` | `Age estimate flickered between categories` | `Seeing the bounding box on the monitor` | `Implement result freezing during the 5s stall` |
 
 
 ---
@@ -548,21 +576,16 @@ Include:
 - revisions.
 
 **Response:**  
-`The fabrication process involved designing, manufacturing, assembling, and refining both the physical structure and electronic integration of the system.`
+`Assembly: The project was built using a dual-tier chassis approach to separate the "brain" from the "muscle." The base level was assembled by mounting four BO motors to the chassis frame to establish the 4WD system. The Arduino Uno, equipped with the HW-130 motor shield, was positioned in the center of the bottom tier to ensure even weight distribution. The Raspberry Pi was then mounted on a secondary upper platform, providing the USB camera with an elevated vantage point for clearer face detection.`
 
-`Design (CAD Modeling):
-The initial model was created using CAD software, where components were designed based on the actual dimensions of the electronic parts. This ensured accurate fitting and minimized errors during assembly.
-Cutting (Laser Cutting):
-The designed parts were fabricated using laser cutting techniques. Sheets were cut precisely according to the CAD model to create the structural base and mounts for components.`
+`Wiring: The wiring followed a strict separation protocol to prevent electrical noise from the motors from resetting the microcontrollers. 
+    - Logic Link: A USB cable was used for Serial communication between the Raspberry Pi and Arduino.
+    - Power Rails: The Raspberry Pi was powered by a dedicated 5V power bank. The motors and Arduino were powered by a 4-slot AA battery pack connected directly to the HW-130 shield's power terminals.
+    - Sensors: IR sensors were wired to the Raspberry Pi's GPIO pins (17 and 27) for path monitoring, while the motor driver inputs were mapped to the Arduino’s digital PWM pins.`
 
-`Components were fixed using adhesives and mechanical supports. Certain parts were intentionally kept modular (not permanently fixed) to allow easy replacement and modification of electronics.
-Surface Finishing:
-Some parts were sanded to smooth rough edges after cutting. Sawdust mixed with adhesive was used to fill gaps and uneven edges, improving structural finish. The final structure was then painted for better aesthetics and durability.`
-
-`Environment Setup (Dark Room Fabrication):
-To enhance projection visibility, a controlled dark environment was created using Z-boards, paper sheets, and bedsheets. This minimized external light interference and improved projection clarity.
-Revisions and Iterations:
-Multiple adjustments were made throughout the process, including refining alignment, improving structural stability, repositioning components, and optimizing the interaction between the physical car and projected environment.`
+`Finishing: To ensure the build was field-ready for school hallways, all loose jumper wires were secured using cable ties and adhesive clips to prevent them from tangling in the wheels. The camera was tilted at a slight downward angle to optimize the capture frame for both adults and children, and the IR sensors were calibrated via their onboard potentiometers to respond to the specific reflectivity of the campus floor.`
+ 
+ `Revisions: The physical design underwent one major revision. Initially, the Raspberry Pi was on the same level as the motors, but the vibrations and low camera angle led to poor face recognition. Moving the Pi to a "top-tier" platform significantly improved the stability of the OpenCV feed. Additionally, the IR sensor mounts were adjusted from a straight-forward position to a slight outward angle to improve the car's "peripheral vision" during turns.`
 
 ## 16 Build Photos
 
@@ -574,7 +597,7 @@ Suggested images:
 - prototype,
 - electronics testing,
 - mechanism test,
-- app screenshot,
+- app screenshot(NA),
 - final build.
 - <img width="960" height="1280" alt="WhatsApp Image 2026-04-24 at 9 46 02 AM (1)" src="https://github.com/user-attachments/assets/74baa570-5770-483e-be6d-d2f03386e37c" />
 
