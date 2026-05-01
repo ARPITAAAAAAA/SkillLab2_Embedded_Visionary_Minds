@@ -218,7 +218,7 @@ Add a sketch with labels showing:
 
 **Insert image below:**  
 `[Upload image and link here]`
-<img width="1600" height="1200" alt="6.3" src="https://github.com/user-attachments/assets/95637f31-b4e7-4427-a9e1-4b63fbeb0ac5" />
+<img width="1600" height="1200" img src="./images/6.3.jpeg" />
 
 ## 6.3 Approximate Dimensions
 
@@ -262,7 +262,7 @@ Insert a hand-drawn or software-made circuit diagram.
 
 **Insert image below:**  
 `[Upload image and link here]`
-<img width="867" height="1156" alt="7.3" src="" />
+<img width="867" height="1156" img src="./images/7.3.jpeg" />
 
 
 # 7.4. Power Plan
@@ -337,7 +337,7 @@ Suggested sequence:
 - error handling.
 
 **Insert image below:**  
-<img width="1600" height="1200" alt="8.3" src="" />
+<img width="1600" height="1200" img src="./images/8.3.jpeg" />
 
 
 
@@ -591,8 +591,8 @@ Suggested images:
 - mechanism test,
 - app screenshot(NA),
 - final build.
-- <img width="960" height="1280" alt="16" src="https://github.com/user-attachments/assets/74baa570-5770-483e-be6d-d2f03386e37c" />
-- <img width="960" height="1280" alt="WhatsApp Image 2026-05-01 at 5.10.10 PM" src="https://github.com/user-attachments/assets/74baa570-5770-483e-be6d-d2f03386e37c" />
+- <img width="960" height="1280" img src="./images/16.jpeg" />
+- <img width="960" height="1280" img src="./images/WhatsApp Image 2026-05-01 at 5.10.10 PM.jpeg" />
 
 
 # 17. Final Outcome  
