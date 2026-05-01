@@ -193,8 +193,44 @@ The system works using sensors and motors controlled by Raspberry Pi.
 | LCD Display | Output | Shows obstacle message |
 | USB Camera | Input | Captures live video feed |
 | Serial Connection (USB) | Input/Output | Communication bridge|
+|Li-ion Battery Pack| Power | Voltage and current to drive both the processing boards and the high-draw motors |
 
 ---
+
+# 6. System Design, Sketches and Visual Planning 
+
+## 6.1 Concept Architecture/sketch/schematic
+
+Add an early sketch of the full idea.
+
+**Insert image below:**  
+`[Upload image and link here]`
+
+## 6.2 Labeled Build Sketch/architecture/flow diagram/algorithm
+
+Add a sketch with labels showing:
+
+- structure,
+- electronics placement,
+- user touch points,
+- moving parts,
+- output elements.
+
+**Insert image below:**  
+`[Upload image and link here]`
+<img width="1600" height="1200" alt="image" src="https://github.com/user-attachments/assets/95637f31-b4e7-4427-a9e1-4b63fbeb0ac5" />
+
+## 6.3 Approximate Dimensions
+
+| Dimension        | Value   |
+| ---------------- | ------- |
+| Length           | `25.5 cm` |
+| Width            | `15 cm` |
+| Height           | `12 cm`  |
+| Estimated weight | `350-450 g` |
+
+---
+
 
 # 7. Electronics Planning  
 
@@ -202,14 +238,12 @@ The system works using sensors and motors controlled by Raspberry Pi.
 
 | Component | Quantity | Purpose |
 |----------|----------|--------|
-| Raspberry Pi | 1 | Main controller |
-| L298N Motor Driver | 1 | Motor control |
-| BO Motors | 4 | Movement |
+| Raspberry Pi | 1 | High-level logic & Face Recognition |
+| Arduino Uno | 1 | Low-level motor control |
+|HW-130 Motor Shield| 1 | Interface for 4 BO Motors |
+| BO Motors + wheels | 4 | 4WD Movement |
 | IR Sensors | 2 | Path detection |
-| Ultrasonic Sensor | 1 | Obstacle detection |
-| Touch Sensor | 1 | Collision detection |
-| LCD Display | 1 | Display message |
-
+| USB | 1 | Visual data for age detection |
 
 ---
 
@@ -229,35 +263,321 @@ All components share a **common ground** for stable operation.
 
 ---
 
-# 8. Software Planning  
+## 7.3 Circuit Diagram/architecture diagram
 
-## 8.2 Software Logic / Algorithm  
+Insert a hand-drawn or software-made circuit diagram.
+
+**Insert image below:**  
+`[Upload image and link here]`
+<img width="867" height="1156" alt="" src="" />
+
+
+# 7.4. Power Plan
+
+| Question         | Response                                                                                                                                          |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Power source     | `DC Power Supply` |
+| Voltage required | `~9-12V for motors (via HW-130 driver)`|
+| Current concerns | `Motors can draw high current under load, which may cause Raspi to shut down if not enough voltage power supplied wirelessly`|
+| Safety concerns  | `Excess power me damage the raspi and extra load on it due to drivers and usb` |
+
+---
+
+# 8. Software Planning/
+
+## 8.1 Software Tools
+
+| Tool / Platform                | Purpose                                        |
+| ------------------------------ | ---------------------------------------------- |
+| `Python 3`                | `Main programming language for logic and AI integration.`|
+| `OpenCV (cv2)`       | `Used for real-time video capture, face detection (Haar Cascades), and DNN inference.` |
+| `Caffe Models` | `Pre-trained Deep Neural Networks used for Gender and Age classification.`                      |
+| `RPi.GPIO`|`Python library to interface with the hardware IR sensors on the Raspberry Pi pins.`|
+|`PySerial`|`Enables communication between the Raspberry Pi and the Arduino/Motor Controller.`|
+|`Threading`|`Allows the AI vision, keyboard input, and motor logic to run simultaneously without lagging.`|
+
+## 8.2 Software Logic/Algorithm
+
+The software is built on a multi-threaded architecture to ensure that heavy AI processing does not interfere with real-time motor safety.
 
 - **Startup:**  
-  Initialize GPIO pins, sensors, motors, and LCD display.
+ - The system initializes Serial communication (/dev/ttyACM0 or ttyUSB0).
+ - GPIO pins are configured for the IR sensors.
+ - The pre-trained Caffe models (Age and Gender nets) and Haar Cascade classifiers are loaded into memory.
 
-- **Sensor Reading:**  
-  Continuously read IR sensor values and ultrasonic distance.
+- **Input Handling:**  
+  - Keyboard Thread: Listens for 'W' (Start), 'S' (Stop), or 'Q' (Quit) using termios for raw input.
+  - Vision Thread: Captures 320x240 resolution frames (optimized for Pi performance).
+  - Sensor Polling: The main loop constantly checks IR sensor states (high/low).
 
 - **Decision Logic:**  
-  - If IR detects line → move forward  
-  - If ultrasonic detects obstacle → stop motors  
-  - Display "Object Detected" on LCD  
-  - If touch sensor pressed → stop immediately  
+  - Keyboard Thread: Listens for 'W' (Start), 'S' (Stop), or 'Q' (Quit) using termios for raw input.
+  - Vision Thread: Captures frames (optimized for Pi performance).
+  - Sensor Polling: The main loop constantly checks IR sensor states (high/low).  
+
+- **Navigation Logic (IR Path Following):**
+  - Forward ('F'): Both IR sensors detect the path.
+  - Left/Right ('L'/'R'): One sensor detects an edge, triggering a corrective turn.
+  - Stop ('S'): Both sensors lose the path or the AI triggers a stall.
 
 - **Output Behavior:**  
-  Motors rotate wheels based on commands.
-
+  - Single-byte characters are sent via Serial to the Arduino to drive the motors.
+  - A visual "Car Vision" window displays green bounding boxes around faces with age/gender text overlays.
+    
 - **Reset Behavior:**  
-  Stop motors if error detected.
+  Pressing 'Q' or a KeyboardInterrupt triggers a safety stop command and cleans up the GPIO pins before exiting.
+  
+---
+## 8.3 Code Flowchart
+
+Insert a flowchart showing your code logic.
+
+Suggested sequence:
+
+- start,
+- initialize,
+- wait for input,
+- read input,
+- decision,
+- trigger output,
+- repeat or reset,
+- error handling.
+
+**Insert image below:**  
+<img width="1600" height="1200" alt="image" src="" />
+<img width="1600" height="1200" alt="image" src="" />
+
+
+
+
+# 9. Bill of Materials
+
+## 9.1 Full BOM
+
+| Item                             | Quantity | In Kit? | Need to Buy? | Estimated Cost | Material / Spec               | Why This Choice?          |
+| -------------------------------- | --------:| ------- | ------------ | --------------:| ----------------------------- | ------------------------- |
+| `[RASPI]`                        | `1`      | `Yes`   | `No`         | `0`            | `38 Pin ESP32`                | `[To control components]` |
+| `[HW-130 Sheild]`                 | `[1]`    | `[Yes]` | `[No]`       | `0`            | `[L298N]`                     | `[To drive both motors]`  |
+| `[Arduino Uno]`                 | `[1]`    | `[Yes]` | `[No]`       | `0`            | `[Microcontroller	ATmega328P, 14 GPIO pins (6 provide PWM output for motor speed control)]`                     | `[To generate PWM for motorss]`  |
+| `[IR sensors]`                 | `[2]`    | `[Yes]` | `[No]`       | `0`            | `[Digital (High/Low) — compatible with Pi GPIO and Arduino]`                     | `[Fast response detection]`  |
+| `[DC Motors and wheel]`          | `[4]`    | `[Yes]`  | `[No]`      | `[0]`        | `[BO Motors and 7 cm wheels]` | `[high torque motors]`    |
+| `[Female and male headers]`               | `[1 pack]`    | `[No]`  | `[Yes]`      | `[80]`         |                              |        `For soldering`                   |
+| `[Batteries with holder]` | `[1]`    | `[Yes]`  | `[No]`      | `[0]`        |  |          |
+
+## 9.2 Material Justification
+
+Explain why you selected your main materials and components.
+
+**Response:**  
+`DC motors (BO motors) were chosen instead of servos or steppers because the system requires continuous rotation for movement rather than precise angular control (Previously, we were considering using steppers as we were planning on tracking movement on the ESP using its relative position from an origin, but since we're using a camera now, this is not required). A motor driver (L298N) was used to allow bidirectional control and speed variation using PWM.`
+
+
+## 9.3 Items You chose
+
+| Item                 | Why Needed               | Purchase Link | Latest Safe Date to Procure | Status       |
+| -------------------- | ------------------------ | ------------- | --------------------------- | ------------ |
+| `BO Motors + Wheels` | `Drive system for car`   | `robu.in`     | `15th April`                | `[Received]` |
+| `Buck Converter`     | `Stable power for ESP32` | `local store` | `before testing`            | `[Received]` |
+| `Li-ion Batteries`   | `Portable power`         | `local store` | `before testing`            | `Recieved`   |
+
+## 9.4 Budget Summary
+
+| Budget Item           | Estimated Cost              |
+| --------------------- | ---------------------------:|
+| Electronics           | `[400]`                     |
+| Mechanical parts      | `[200]`                     |
+| Fabrication materials | `[0 (Available on campus)]` |
+| Purchased extras      | `[0]`                       |
+| Contingency           | `[300]`                     |
+| **Total**             | `[900]`                     |
+
+## 9.5 Budget Reflection
+
+If your cost is too high, what can be simplified, removed, substituted, or shared?
+
+**Response:**  
 
 ---
 
-# 13. Biggest Unknown Right Now  
+# 10. Planning the Work
 
-The primary uncertainty is the accuracy and processing lag of the age-detection model when running on the Raspberry Pi hardware in real-time, especially in variable lighting conditions typical of school hallways. And running raspi wirelessly with power supply if less or finished might stop the working of raspi
+## 10.1 Team Working Agreement
+
+Write how your team will work together.
+
+Include:
+
+- how tasks are divided,
+- how decisions are made,
+- how progress will be checked,
+- what happens if a task is delayed,
+- how documentation will be maintained.
+
+**Response:**  
+
+
+## 10.2 Task Breakdown
+
+| Task ID | Task                    | Owner    | Estimated Hours | Deadline     | Dependency | Status |
+| ------- | ----------------------- | -------- | ---------------:| ------------ | ---------- | ------ |
+| T1      | `[Finalize concept]`    | `[Both]` | `2`             | `1st April`  | `None`     | `Done` |
+
+
+## 10.3 Responsibility Split
+
+| Area                 | Main Owner     | Support Owner |
+| -------------------- | ----------     | ------------- |
+| Concept              | `[Mrugendra]`  | `[Jyoti]`     |
+| Electronics          | `[]`           | `[]`          |
+| Coding               | `[]`           | `[]`          |
+| Mechanical build     | `[]`           | `[]`          |
+| Testing              | `[]`           | `[]`          |
+| Documentation        | `[]`           | `[]`          |
 
 ---
+
+# 6 hour Milestones
+
+## 11.1 6-hour Plan
+
+### Bi Hour 1 — Plan and De-risk
+
+Expected outcomes:
+
+- [x] Idea finalized
+- [x] Core interaction decided
+- [x] Sketches made
+- [x] BOM completed
+- [x] Purchase needs identified
+- [ ] Key uncertainty identified
+- [x] Basic feasibility tested
+
+### Bi Hour 2 — Build Subsystems
+
+Expected outcomes:
+
+- [x] Electronics tests completed
+- [ ] CAD / structure planning completed
+- [ ] App UI started if needed
+- [x] Mechanical concept tested
+- [x] Main subsystems partially working
+
+### Bi Hour 3 — Integrate
+
+Expected outcomes:
+
+- [x] Physical body built
+- [x] Electronics integrated
+- [x] Code connected to hardware
+- [ ] App connected if required
+- [x] First playable version exists
+
+### Bi Hour 4 — Refine and Finish
+
+Expected outcomes:
+
+- [x] Technical bugs reduced
+- [x] Playtesting completed
+- [x] Improvements made
+- [x] Documentation completed
+- [x] Final build ready
+
+## 12.2  Update Log
+
+| Hour   | Planned Goal   | What Actually Happened | What Changed   | Next Steps     |
+| ------ | -------------- | ---------------------- | -------------- | -------------- |
+| Day 1 | `[Write here]` | `[Write here]`         | `[Write here]` | `[Write here]` |
+| Day 2 | `[Write here]` | `[Write here]`         | `[Write here]` | `[Write here]` |
+| Day 3 | `[Write here]` | `[Write here]`         | `[Write here]` | `[Write here]` |
+| Day 4 | `[Write here]` | `[Write here]`         | `[Write here]` | `[Write here]` |
+
+---
+
+# 13. Risks and Unknowns
+
+## 13.1 Risk Register
+
+| Risk                                                            | Type         | Likelihood | Impact   | Mitigation Plan                                                                       | Owner                |
+| --------------------------------------------------------------- | ------------ | ---------- | -------- | ------------------------------------------------------------------------------------- | -------------------- |
+| WiFi connection between laptop and ESP32 becomes unstable       | `Technical`  | `Medium`   | `High`   | Keep ESP32 close, ensure stable power supply, reduce network load, add fail-safe stop | `[Gopal]`           |
+
+
+## 13.2 Biggest Unknown Right Now
+
+The primary uncertainty is the accuracy and processing lag of the age-detection model when running on the Raspberry Pi hardware in real-time, especially in variable lighting conditions typical of school hallways. And running raspi wirelessly with power supply if less or finished might stop the working of raspi 
+
+---
+# 14. Testing 
+
+## 14.1 Technical Testing Plan
+
+| What Needs Testing     | How You Will Test It                                                                 | Success Condition                                                                                    |
+| ---------------------- | ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| `[Wifi connection]`    | `[Check if motor spins via app button]`                                              | `[Both motors accurately respond to wifi signals]`                                                   |
+                       |
+## 14.2 Testing and Debugging Log
+
+| Date          | Problem Found                         | Type         | What You Tried                                | Result               | Next Action                                    |
+| ------------- | ------------------------------------- | ------------ | --------------------------------------------- | -------------------- | ---------------------------------------------- |
+| `18th April`  | `Car not balancing properly`          | `Mechanical` | `Add low-friction caster support to one side` | `Worked`             | `improve caster structure`                     |
+
+
+## 14.3 Playtesting Notes
+
+| Tester      | What They Did                        | What Confused Them                    | What They Enjoyed                         | What You Will Change                          |
+| ----------- | ------------------------------------ | ------------------------------------- | ----------------------------------------- | --------------------------------------------- |
+| `Gopal` | `Tried navigating through obstacles` | `Some obstacles ewren't clear enough` | `Liked projection + real car interaction` | `Add a slight red highlight around obstacles` |
+
+
+---
+
+# 15. Build Documentation
+
+## 15.1 Fabrication Process(if any)
+
+Describe how the project was physically made.
+
+Include:
+
+- cutting (NA),
+- 3D printing (NA),
+- assembly,
+- fastening(NA),
+- wiring,
+- finishing,
+- revisions.
+
+**Response:**  
+`The fabrication process involved designing, manufacturing, assembling, and refining both the physical structure and electronic integration of the system.`
+
+`Design (CAD Modeling):
+The initial model was created using CAD software, where components were designed based on the actual dimensions of the electronic parts. This ensured accurate fitting and minimized errors during assembly.
+Cutting (Laser Cutting):
+The designed parts were fabricated using laser cutting techniques. Sheets were cut precisely according to the CAD model to create the structural base and mounts for components.`
+
+`Components were fixed using adhesives and mechanical supports. Certain parts were intentionally kept modular (not permanently fixed) to allow easy replacement and modification of electronics.
+Surface Finishing:
+Some parts were sanded to smooth rough edges after cutting. Sawdust mixed with adhesive was used to fill gaps and uneven edges, improving structural finish. The final structure was then painted for better aesthetics and durability.`
+
+`Environment Setup (Dark Room Fabrication):
+To enhance projection visibility, a controlled dark environment was created using Z-boards, paper sheets, and bedsheets. This minimized external light interference and improved projection clarity.
+Revisions and Iterations:
+Multiple adjustments were made throughout the process, including refining alignment, improving structural stability, repositioning components, and optimizing the interaction between the physical car and projected environment.`
+
+## 16 Build Photos
+
+Add photos throughout the project.
+
+Suggested images:
+
+- early sketch,
+- prototype,
+- electronics testing,
+- mechanism test,
+- app screenshot,
+- final build.
+- <img width="960" height="1280" alt="WhatsApp Image 2026-04-24 at 9 46 02 AM (1)" src="https://github.com/user-attachments/assets/74baa570-5770-483e-be6d-d2f03386e37c" />
+
 
 # 17. Final Outcome  
 
