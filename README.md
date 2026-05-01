@@ -425,7 +425,7 @@ Include:
 
 ---
 
-#11. Hour Milestones
+## 11 Hours milestone
 
 ## 11.1 6-hour Plan
 
@@ -491,6 +491,8 @@ Expected outcomes:
 - [X] Documentation completed
 - [x] Partial build ready
 
+---
+
 ## 12 Update Log 
 
 | Hour   | Planned Goal   | What Actually Happened | What Changed   | Next Steps     |
@@ -520,6 +522,7 @@ Expected outcomes:
 The primary uncertainty is the accuracy and processing lag of the age-detection model when running on the Raspberry Pi hardware in real-time, especially in variable lighting conditions typical of school hallways. And running raspi wirelessly with power supply if less or finished might stop the working of raspi 
 
 ---
+
 # 14. Testing 
 
 ## 14.1 Technical Testing Plan
