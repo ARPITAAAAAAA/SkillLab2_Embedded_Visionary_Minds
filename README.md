@@ -55,16 +55,16 @@ By the final review, this README should clearly show:
 # 1. Team Identity  
 
 ## 1.1 Studio / Group Name: Visionary Minds 
-Project^2  
+ROBOCAR  
 
 ## 1.2 Team Members  
 
 | Name | Primary Role | Secondary Role | Strengths Brought to the Project |
 |------|--------------|----------------|----------------------------------|
-| Mehar Jha | Documentation | Coding & Testing | Material Handling, Hardware Setup, Troubleshooting |
-| Arpita Yaligeti | Electronics / Hardware Testing | Coding | Hardware Setup, Sensor Integration, Debugging |
-| Prashansa Vishe | Electronics / Coding | Documentation | Sensor Calibration, System Testing, Circuit Assembly |
-| Ansh Upadhyay | Electronics / Documentation | Coding | Material Handling, Hardware Assembly |
+| Mehar Jha | Documentation, PPT | Coding & Testing | Material Handling, Hardware Setup, Troubleshooting |
+| Arpita Yaligeti | Electronics / Hardware Testing | Coding | Hardware Setup, Sensor Integration, Debugging, Circuit Assembly |
+| Prashansa Vishe | Electronics / Coding | Documentation | Sensor Calibration, System Testing |
+| Ansh Upadhyay | Electronics / Documentation | Material Handling | Material Handling, Hardware Assembly |
 
 ---
 
@@ -77,17 +77,15 @@ Project^2
 
 ## 1.4 One-Line Pitch  
 
-A smart robo car system that follows a path using IR sensors, detects obstacles using an ultrasonic sensor, and displays obstacle alerts on an LCD screen.
+An autonomous security assistant using computer vision and IR sensors to monitor restricted areas and provide real-time age-detection analytics.
 
 ---
 
 ## 1.5 Expanded Project Idea  
 
-Our project is a smart autonomous robo car designed to follow a predefined path and avoid obstacles using multiple sensors. The car uses **IR sensors** to detect and follow a path, an **ultrasonic sensor** to detect obstacles in front of the car, and a **touch sensor** to provide collision safety.  
+Our project is a 4WD robotic vehicle designed for surveillance in environments where human presence is restricted or physically demanding, such as high-altitude school corridors, industrial sites, or areas requiring 24/7 monitoring. The project creates a bridge between physical mobility and intelligent data recording by deploying a car on specific floors to act as a mobile sentry. It utilizes a Raspberry Pi for high-level logic and an Arduino for motor control, ensuring a stable and responsive drive system.
 
-When an obstacle is detected, the system stops the motors and displays **"Object Detected"** on the LCD screen. This demonstrates how intelligent vehicles sense their surroundings and respond automatically.
-
-The system uses **Raspberry Pi**, **motor drivers**, **IR sensors**, **ultrasonic sensors**, and **LCD display modules** to perform detection, decision-making, and movement control.
+The experience centers on automated human detection. Equipped with a camera and OpenCV-powered face recognition, the car identifies individuals and currently estimates their age—a feature designed to log demographic data of visitors in schools or colleges. By replacing the need for elderly security personnel to climb stairs or navigate difficult terrain, GuardianBot provides a safe, efficient, and recordable method of site security.
 
 ---
 
@@ -95,13 +93,19 @@ The system uses **Raspberry Pi**, **motor drivers**, **IR sensors**, **ultrasoni
 
 ## 2.1 References  
 
-We wanted to gain practical experience in robotics, sensors, and embedded systems by building a project that is both educational and useful. The idea of combining IR sensors and ultrasonic sensors helped us understand how multiple technologies work together.
+List what inspired the project.
+
+| Source Type | Title / Link                                                        | What Inspired You                                                                         |
+| ----------- | ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
+|`[Project]`|`https://github.com/MichielBontenbal/RoboCar/tree/master`|`Create a robot car with a camera.`|
+| `[Project]`| `[https://www.instagram.com/reel/DW4CT7WCDry/?igsh=cXg3dzAxYmdncDBo](https://github.com/GilLevi/AgeGenderDeepLearning/tree/master)` | `Implementing real-time age and gender detection using deep learning models on edge devices.` |
+|`[Project]`|`[https://github.com/ArminJo/Arduino-RobotCar](https://youtu.be/RPDQvuAIhus?si=N5lOAUN0sSBaQyfA)`|`Making a Raspberry Pi Pico Bluetooth Control Car`|          
 
 ---
 
 ## 2.2 Original Twist  
 
-Our project combines **path following**, **obstacle detection**, and **LCD alert display** into a single system. The addition of an **LCD display to show obstacle detection messages** makes the project more interactive and user-friendly compared to basic line follower robots.
+Unlike standard remote-controlled cars, GuardianBot focuses on "floor-specific" intelligence. It is specifically designed for multi-story institutions where it can be left to patrol a single level independently. The original twist lies in its demographic-logging feature (age detection), turning a simple surveillance camera into a data-gathering tool for institutional security.
 
 ---
 
@@ -109,14 +113,7 @@ Our project combines **path following**, **obstacle detection**, and **LCD alert
 
 ## 3.1 User Journey  
 
-1. The user switches ON the robo car.
-2. The car starts moving automatically.
-3. IR sensors detect the black path.
-4. The car follows the path continuously.
-5. If an obstacle appears, the ultrasonic sensor detects it.
-6. The motors stop immediately.
-7. The LCD displays **"Object Detected"**.
-8. When the path is clear, the car continues moving.
+A security officer at a large university needs to monitor the 4th-floor labs after hours but cannot easily access the stairs due to physical constraints and the elevators is out of service or electricity is switched off after working hours. They deploy RoboCar on the 4th floor. As the car patrolys, it uses IR sensors to navigate around hallway obstacles. When a student enters the frame, the car's camera triggers a face-detection algorithm, estimates the student's age, and records the event. The officer receives this data remotely, allowing them to verify who is on-site without ever leaving the ground floor.
 
 ---
 
@@ -124,25 +121,25 @@ Our project combines **path following**, **obstacle detection**, and **LCD alert
 
 ## 4.1 Definition of Usable  
 
-The system is usable when the robo car follows the path correctly and stops when an obstacle is detected.
+The project is considered "usable" if the car can navigate a flat surface without colliding with obstacles (via IR sensors) while maintaining a stable camera feed that correctly identifies a human face and displays an age estimate on the local monitoring screen.
 
 ---
 
 ## 4.2 Minimum Usable Version  
 
 - Motors move correctly  
-- IR sensors follow line  
-- Ultrasonic detects obstacle  
-- Car stops on obstacle  
+- IR sensors follow line and to avoid crashes   
+- Car stops recognizes the age of the human
+- Stalls and then starts the movement again  
 
 ---
 
 ## 4.3 Stretch Features  
 
-- LCD display message  
-- LED obstacle indication  
-- Speed control  
-- Mobile control (future)
+- Human-following mode (controlling the car via body position/gestures).
+- Full database logging of recognized faces with time-stamps.
+- Automated stair-climbing or elevator-calling integration. 
+- Mobile control
 
 ---
 
@@ -150,11 +147,17 @@ The system is usable when the robo car follows the path correctly and stops when
 
 ## 5.1 Project Type  
 
-- [x] Electronics-based  
-- [x] Sensor-based  
-- [x] Motorized  
-- [x] Screen/UI-based  
-- [x] Fabricated structure  
+- [x] Electronics-based
+- [ ] Mechanical
+- [x] Sensor-based
+- [ ] App-connected
+- [x] Motorized
+- [ ] Sound-based
+- [x] Light-based
+- [ ] Screen/UI-based
+- [x] Fabricated structure
+- [ ] Game logic based
+- [ ] Installation (Surveillance) 
 
 ---
 
@@ -163,19 +166,21 @@ The system is usable when the robo car follows the path correctly and stops when
 The system works using sensors and motors controlled by Raspberry Pi.
 
 **Input:**  
-- IR Sensors → detect line  
-- Ultrasonic Sensor → detect obstacle  
-- Touch Sensor → detect collision  
+- Visual Data: A USB camera captures live frames, focusing on human presence.
+- Proximity Data: Dual IR sensors provide real-time distance measurements to detect obstacles  
+- Control Input: The system accepts serial commands for Start/Stop.  
 
 **Processing:**  
-- Raspberry Pi reads sensor data  
-- Makes movement decision  
+- Primary Logic (Raspberry Pi): Acts as the high-level controller, running Python-based scripts to process video and perform subtle age detection via OpenCV.
+- Motor Control (Arduino): Acts as the hardware interface, translating serial commands from the Pi into motor pulses while monitoring IR sensor interrupts for safety.  
 
 **Output:**  
-- Motors rotate wheels  
-- LCD displays messages  
-- Car stops when obstacle detected  
-
+- Physical Motion: Four BO motors execute movement (Forward, Reverse, Right and Left).
+- Safety Response: The motors are automatically disabled if the IR sensors detect an immediate collision risk.
+- Information: The system outputs detects the estimated age data.  
+**Physical Structure:**
+- Chassis: A 4WD mobile platform with a dual-tier arrangement.
+- Component Placement: The motors are all placed at the bottom and the Hw-130 aurdino sheild at he top centre for stability, while the Pi "brain" at the top back and camera sit on the top front for a clear field of view.
 ---
 
 ## 5.3 Input / Output Map  
@@ -183,11 +188,11 @@ The system works using sensors and motors controlled by Raspberry Pi.
 | System Part | Type | What It Does |
 |-------------|------|---------------|
 | IR Sensor | Input | Detects path |
-| Ultrasonic Sensor | Input | Detects obstacles |
-| Touch Sensor | Input | Detects collision |
 | Raspberry Pi | Processing | Controls logic |
-| Motor Driver | Output | Drives motors |
+| HW-130 Motor Shield | Output | Drives motors |
 | LCD Display | Output | Shows obstacle message |
+| USB Camera | Input | Captures live video feed |
+| Serial Connection (USB) | Input/Output | Communication bridge|
 
 ---
 
@@ -250,7 +255,7 @@ All components share a **common ground** for stable operation.
 
 # 13. Biggest Unknown Right Now  
 
-The biggest uncertainty is maintaining stable sensor readings and ensuring accurate obstacle detection without false triggers.
+The primary uncertainty is the accuracy and processing lag of the age-detection model when running on the Raspberry Pi hardware in real-time, especially in variable lighting conditions typical of school hallways. And running raspi wirelessly with power supply if less or finished might stop the working of raspi
 
 ---
 
@@ -258,30 +263,29 @@ The biggest uncertainty is maintaining stable sensor readings and ensuring accur
 
 ## 17.1 Final Description  
 
-The final system is a smart robo car capable of following a line path using IR sensors and detecting obstacles using an ultrasonic sensor. When an obstacle is detected, the car stops immediately and displays **"Object Detected"** on the LCD screen. The system successfully demonstrates autonomous navigation and safety detection.
+The final project is a compact, 4WD autonomous vehicle housed in a custom-fabricated chassis. It successfully integrates a Raspberry Pi and Arduino to perform  the robo car to move as needed with the help of ir sensors and real-time age estimation and surveillance. 
 
 ---
 
 ## 17.2 What Works Well  
 
 - Accurate line following  
-- Reliable obstacle detection  
-- Clear LCD display alerts  
-- Stable motor movement  
+- Reliable obstacle detection
+- Stable motor environment
 
 ---
 
 ## 17.3 What Still Needs Improvement  
-
-- Improve speed control  
-- Reduce sensor noise  
-- Improve battery life  
+  
+- Sensor accuracy  
+- Improve battery life
+- Make wireless 
 
 ---
 
 ## 17.4 What Changed From Original Plan  
 
-Initially, the project only included line following. Later, obstacle detection and LCD display features were added to improve functionality.
+Originally, we intended to implement a gesture-based control system where the car would move based on a human's physical position. However, due to time constraints and the complexity of mapping spatial coordinates to motor logic, we pivoted to perfecting the face recognition and age detection features.
 
 ---
 
@@ -289,12 +293,12 @@ Initially, the project only included line following. Later, obstacle detection a
 
 ## 18.2 Technical Reflection  
 
-We learned how to connect sensors to Raspberry Pi, control motors using drivers, read sensor data, and implement logic for autonomous movement. We also learned debugging techniques and hardware integration.
+We gained significant experience in inter-board communication (Serial between Pi and Arduino) and the nuances of power management—specifically how high-current motor draws can cause logic brownouts if not properly regulated.
 
 ---
 
 ## 18.4 If You Had One More Hour  
 
-We would add Bluetooth or WiFi control to manually control the robo car from a mobile device.
+We would add WiFi control to manually control the robo car from a laptop, and add face recognition accurately.
 
 
